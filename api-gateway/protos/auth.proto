@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+option go_package = "./genproto";
+
+// AuthService - Сервис аутентификации
+service AuthService {
+    // Метод для регистрации
+    rpc SignUp(UserReq) returns (UserResp) {}
+
+    // Метод для верификации пользователя
+    rpc Verify(UserReq) returns (UserResp) {}
+
+    // Метод для входа в систему
+    rpc SignIn(UserReq) returns (UserResp) {}
+
+    // Метод для получения профиля пользователя (добавленный метод Profile)
+    rpc Profile(UserReq) returns (UserReq) {}
+
+    // Метод для получения пользователя по ID
+    rpc GetUserById(UserReq) returns (UserReq){}
+}
+
+// UserReq - Сообщение запроса пользователя
+message UserReq {
+    string user_id = 1;       
+    string username = 2;      
+    string email = 3;        
+    string password = 4;      
+    string password_hash = 5; 
+    Profile profile = 6;      
+    string token = 7;        
+}
+
+// Profile - Сообщение профиля пользователя
+message Profile {
+    string first_name = 1;   
+    string last_name = 2;     
+    string address = 3;       
+}
+
+// Users - Сообщение для списка пользователей
+message Users {
+    repeated UserReq users = 1; 
+}
+
+// UserResp - Сообщение ответа пользователя
+message UserResp {
+    string user_id = 1;      
+    string status = 2;        
+    string email = 3;        
+    string token = 4;        
+}

@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  device_control:
+    container_name: device_control
+    build: .
+    ports:
+      - "8002:8002"
+    networks:
+      - GLhost
+
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: Bek10022006
+      MONGO_INITDB_ROOT_PASSWORD: Bek10022006
+    ports:
+      - "27019:27017"
+    networks:
+      - GLhost
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "mongo --eval 'db.runCommand({ ping: 1 })'"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+
+networks:
+  GLhost:
+    external: true
+    name: home
+    driver: bridge
+
+  mynetwork:
+    driver: bridge
+
+volumes:
+  db:

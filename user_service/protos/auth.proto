@@ -1,0 +1,43 @@
+syntax = "proto3";  
+
+option go_package = "./genproto";  
+
+// Определение сервиса аутентификации.  
+service AuthService {  
+    rpc SignUp(UserRequest) returns (UserResponse) {}  
+    rpc Verify(UserRequest) returns (UserResponse) {}  
+    rpc SignIn(UserRequest) returns (UserResponse) {}  
+    rpc Profile(UserRequest) returns (UserRequest) {} // Метод для получения/обновления профиля  
+    rpc GetUserById(UserRequest) returns (UserRequest) {}  
+}  
+
+// Запрос пользователя с необходимыми полями.  
+message UserRequest {  
+    string user_id = 1;          // ID пользователя  
+    string username = 2;         // Имя пользователя  
+    string email = 3;            // Email пользователя  
+    string password = 4;         // Пароль пользователя  
+    string password_hash = 5;    // Хешированный пароль  
+    Profile profile = 6;         // Профиль пользователя  
+    string token = 7;            // JWT токен  
+}  
+
+// Структура профиля пользователя.  
+message Profile {  
+    string first_name = 1;       // Имя  
+    string last_name = 2;        // Фамилия  
+    string address = 3;          // Адрес  
+}  
+
+// Сообщение для передачи списка пользователей.  
+message UserList {  
+    repeated UserRequest users = 1; // Список пользователей  
+}  
+
+// Ответ от сервиса аутентификации.  
+message UserResponse {  
+    string user_id = 1;          // ID пользователя  
+    string status = 2;           // Статус операции  
+    string email = 3;            // Email пользователя  
+    string token = 4;            // JWT токен  
+}

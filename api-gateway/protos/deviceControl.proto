@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+// Сообщение Device описывает устройство
+message Device {
+  string device_id = 1;                   
+  string user_id = 2;                      
+  string device_type = 3;                  
+  string device_name = 4;                  
+  string device_status = 5;                
+  map<string, string> configuration_settings = 6;
+  string last_updated = 7;                
+  string location = 8;                     
+  string firmware_version = 9;           
+  string connectivity_status = 10;         
+}
+
+// Сообщение Command описывает команду для устройства
+message Command {
+  string command_id = 1;                   
+  string device_id = 2;                   
+  string user_id = 3;                      
+  string command_type = 4;                 
+  map<string, string> command_payload = 5; 
+  string timestamp = 6;                    
+  string status = 7;                       
+}
+
+// Сервис DeviceService для управления устройствами
+service DeviceService {
+  rpc CreateDevice(CreateDeviceRequest) returns (Device) {}    
+  rpc GetDevice(GetDeviceRequest) returns (Device) {}          
+  rpc UpdateDevice(UpdateDeviceRequest) returns (Device) {}   
+  rpc DeleteDevice(DeleteDeviceRequest) returns (DeleteDeviceResponse) {}
+  rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse) {}    
+  rpc SendCommand(Command) returns (CommandResponse) {}      
+}
+
+// Сообщение CreateDeviceRequest для запроса на создание устройства
+message CreateDeviceRequest {
+  Device device = 1;                  
+}
+
+// Сообщение GetDeviceRequest для запроса на получение устройства
+message GetDeviceRequest {
+  string device_id = 1;               
+}
+
+// Сообщение UpdateDeviceRequest для запроса на обновление устройства
+message UpdateDeviceRequest {
+  Device device = 1;                  
+}
+
+// Сообщение DeleteDeviceRequest для запроса на удаление устройства
+message DeleteDeviceRequest {
+  string device_id = 1;              
+}
+
+// Сообщение DeleteDeviceResponse для ответа на запрос удаления устройства
+message DeleteDeviceResponse {
+  bool success = 1;                   
+}
+
+// Сообщение ListDevicesRequest для запроса на получение списка устройств
+message ListDevicesRequest {
+  string user_id = 1;                 
+  int32 page_size = 2;                
+  string page_token = 3;              
+}
+
+// Сообщение ListDevicesResponse для ответа на запрос списка устройств
+message ListDevicesResponse {
+  repeated Device devices = 1;       
+  string next_page_token = 2;        
+}
+
+// Сообщение CommandResponse для ответа на команду
+message CommandResponse {
+  string status = 1;                 
+}
